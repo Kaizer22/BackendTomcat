@@ -8,12 +8,21 @@
     <servlet>
         <servlet-name>test</servlet-name>
         <servlet-class>TestServlet</servlet-class>
+    </servlet>
 
+    <servlet>
+        <servlet-name>generated_text</servlet-name>
+        <servlet-class>MarkovTextGeneratorServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>test</servlet-name>
         <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>generated_text</servlet-name>
+        <url-pattern>/generated_text</url-pattern>
     </servlet-mapping>
 
 </web-app>
