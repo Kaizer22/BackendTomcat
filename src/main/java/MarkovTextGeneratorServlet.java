@@ -5,6 +5,7 @@ import TextGenerator.StatManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,12 @@ public class MarkovTextGeneratorServlet extends HttpServlet {
             Generator generator = new Generator();
             String textResult = generator.generateText(parsingManager.getStatistics(), len);
 
-            showGeneratedTextPage(textResult, pw, cssPath);
+            req.setAttribute("text", textResult);
+
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("pages/textGeneratorPage.jsp");
+            requestDispatcher.forward(req, resp);
+
+            //showGeneratedTextPage(textResult, pw, cssPath);
         }
 
     }
