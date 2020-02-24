@@ -2,10 +2,8 @@ import TextGenerator.Generator;
 import TextGenerator.ParsingManager;
 import TextGenerator.StatManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +24,7 @@ public class MarkovTextGeneratorServlet extends HttpServlet {
 
         String appPath = req.getServletContext().getRealPath("");
         String statPath = appPath + "WEB-INF/classes/textGenerator/";
+        String cssPath = req.getContextPath();
 
 
         String param_len = req.getParameter("len");
@@ -50,9 +49,49 @@ public class MarkovTextGeneratorServlet extends HttpServlet {
             parsingManager.setStatistics(statManager.getStats());
 
             Generator generator = new Generator();
+            String textResult = generator.generateText(parsingManager.getStatistics(), len);
 
-            pw.println(generator.generateText(parsingManager.getStatistics(), len));
+            showGeneratedTextPage(textResult, pw, cssPath);
         }
 
+    }
+
+    private void showGeneratedTextPage(String text, PrintWriter pw, String cssPath){
+
+
+
+        //cssPath = cssPath.concat("textGeneratorStyle.css");
+
+        System.out.println(cssPath);
+
+       pw.println( "<!DOCTYPE html>");
+       pw.println("<html lang=\"ru\">");
+        pw.println("<head>");
+        pw.println("<meta charset=\"UTF-8\">");
+                pw.println("<meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,maximum-scale=10\">");
+                pw.println("<title>Your title</title>");
+                pw.println("<link rel=\"StyleSheet\" href=\""+cssPath+"/css/textGeneratorStyle.css\" type = \"text\\css\">");
+                pw.println("</head>");
+                pw.println("<body>");
+                pw.println("<div class=\"content-wrapper\">");
+                pw.println("<header class=\"header\">");
+                pw.println("<p style=\"font-size: 30px; margin: 0; padding: 10px 1em;\">Header</p>");
+                pw.println("</header>");
+
+                pw.println("<div class=\"container clearfix\">");
+                pw.println("<main class=\"content\">");
+                pw.println("<p style=\"text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;\">"+text+"</p>");
+                pw.println("</main>");
+                pw.println("<aside class=\"sidebar sidebar1\">");
+                pw.println("<p style=\"text-align: center;\">sidebar 1</p>");
+                pw.println("</aside>");
+                pw.println("</div>");
+
+                pw.println("<footer class=\"footer\">");
+                pw.println("<p style=\"font-size: 30px; margin: 0; padding: 10px 1em;\">Footer</p>");
+                pw.println("</footer>");
+                pw.println("</div>");
+                pw.println("</body>");
+                pw.println("</html>");
     }
 }
